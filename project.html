@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #ffffff;
+        }
+        label {
+            font-size: 18px;
+            margin-right: 10px;
+        }
+        .input-group {
+            display: flex;
+            margin-bottom: 20px;
+        }
+        input {
+            padding: 10px;
+            margin-right: 10px;
+            border: 1px solid #070a0e;
+            border-radius: 4px;
+        }
+        button {
+            color: rgb(15, 13, 13);
+            border: none;
+            padding: 10px 15px;
+            margin-right: 5px;
+            border-radius: 4px;
+            cursor: pointer;
+            background-color:rgb(199, 197, 197);
+        }
+        button:hover {
+            background-color: #d5d5d8;
+        }
+        .task-container {
+            border-radius: 5px;
+            padding: 10px;
+            min-height: 50px;
+        }
+        .value-item {
+            background-color: #e0e0e0;
+            padding: 10px;
+            border: 1px solid black;
+            margin: 5px 0;
+            text-align: center;
+            width: fit-content;
+        }
+        .color {
+            background-color: green;
+            color: white;
+        }
+        .delete-color {
+            background-color: red;
+            color: white;
+        }
+        .found {
+            background-color:orange;
+        }
+    </style>
+</head>
+<body>
+    <div class="input-group">
+        <label>Enter Array Item:</label>
+        <input type="text" id="inputValue" class="form-control">
+        <button onclick="insertItem()">Insert</button>
+        <button onclick="deleteItem()">Delete</button>
+        <button onclick="findItem()">Find</button>
+        <button onclick="printArray()">Print</button>
+    </div>
+
+    <div id="taskContainer" class="task-container">
+        <h2 id="emptyMessage">Array is empty</h2>
+    </div>
+
+    <script>
+        let array = [];
+      // Insert item into array
+
+        function insertItem() {
+            const inputValue = document.getElementById("inputValue").value;
+            const taskContainer = document.getElementById("taskContainer");
+            const emptyMessage = document.getElementById("emptyMessage");
+
+            if (inputValue) {
+                // Remove "Array is empty" message if present
+                if (emptyMessage) {
+                    taskContainer.removeChild(emptyMessage);
+                }
+
+                array.push(inputValue);
+
+                // Create new item element
+                const newItem = document.createElement("div");
+                newItem.className = "value-item color";
+                newItem.textContent = inputValue;
+
+                // Add new item to the container
+                taskContainer.appendChild(newItem);
+
+                // Remove highlight after 1 second
+                setTimeout(() => {
+                    newItem.classList.remove("color");
+                }, 1000);
+
+                document.getElementById("inputValue").value = ""; // Clear the input field
+            } else {
+                alert("Please enter a value to insert.");
+            }
+        }
+
+      //delete items from an array
+        function deleteItem() {
+            const inputValue = document.getElementById("inputValue").value;
+            const taskContainer = document.getElementById("taskContainer");
+
+            if (inputValue) {
+                const items = taskContainer.getElementsByClassName("value-item");
+                let found = false;
+
+                // Iterate over the items to find and remove the matching value
+                for (let i = 0; i < items.length; i++) {
+                    if (items[i].textContent === inputValue) {
+                        found = true;
+                        items[i].classList.add("delete-color"); // Highlight in red
+
+                        // Wait for 500ms before removing the item
+                        setTimeout(() => {
+                            taskContainer.removeChild(items[i]);
+                            
+                            //alert("Item deleted");
+                        }, 500);
+                        break;
+                    }
+                }
+
+                if (!found) {
+                    alert("Entered value is not present in the array");
+                }
+
+                document.getElementById("inputValue").value = ""; // Clear the input field
+            } else {
+                alert("Please enter a value to delete.");
+            }
+        }
+     //find items from an array
+        function findItem() {
+            const inputValue = document.getElementById("inputValue").value;
+            const items = document.getElementsByClassName("value-item");
+            let found = false;
+
+            // Iterate over the items and highlight the matching one
+            for (let item of items) {
+                item.classList.remove("found"); // Remove previous highlight
+                if (item.textContent === inputValue) {
+                    item.classList.add("found");
+                    found = true;
+                }
+            
+            }
+
+            if (!found) {
+                alert("Entere a value to search");
+                
+            } 
+
+            document.getElementById("inputValue").value = ""; // Clear the input field
+        }
+        //print items from an array
+
+        function printArray() {
+            if (array.length > 0) {
+                alert("Array items: " + array.join(", "));
+            } else {
+                alert("Array is empty? Please insert values.");
+            }
+        }
+    </script>
+</body>
+</html>
