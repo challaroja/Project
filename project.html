@@ -169,14 +169,21 @@
             document.getElementById("inputValue").value = ""; // Clear the input field
         }
         //print items from an array
-
         function printArray() {
-            if (array.length > 0) {
-                alert("Array items: " + array.join(", "));
-            } else {
-                alert("Array is empty? Please insert values.");
+            const items = document.getElementsByClassName("value-item");
+
+            // Remove all highlight classes from items
+            for (let item of items) {
+                item.classList.remove("color", "found", "delete-color");
+            }
+
+            const values = [];
+            for (let item of items) {
+                values.push(item.textContent);
             }
         }
+
+        
     </script>
 </body>
 </html>
